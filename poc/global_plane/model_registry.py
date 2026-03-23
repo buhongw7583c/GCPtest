@@ -119,7 +119,10 @@ class ModelRegistry:
 
         # Archive current production
         if self._production_version and self._production_version in self._versions:
-            self._versions[self._production_version].stage = "archived"
+            prev_production_id = self._production_version
+            self._versions[prev_production_id].stage = "archived"
+        else:
+            prev_production_id = None
 
         mv = self._versions[version_id]
         mv.stage = "production"
@@ -130,7 +133,7 @@ class ModelRegistry:
             "success": True,
             "version_id": version_id,
             "strategy": strategy,
-            "previous_production": self._production_version,
+            "previous_production": prev_production_id,
         }
 
     def get_production_model(self) -> Optional[DefectDetector]:

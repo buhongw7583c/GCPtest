@@ -43,6 +43,11 @@ class EdgeNode:
         For reproducibility
     """
 
+    # Defect class has an additional feature shift to distinguish it from normal.
+    # Simulates a systematic visual anomaly (e.g. surface scratch) in the feature space.
+    DEFECT_SHIFT = 1.0
+    DEFECT_NOISE_SCALE = 1.5
+
     def __init__(
         self,
         factory_id: str,
@@ -88,7 +93,11 @@ class EdgeNode:
 
         # Defects have a shifted feature distribution (simulates visual anomaly)
         defect_idx = labels == 1
-        X[defect_idx] += self.rng.standard_normal((defect_idx.sum(), self.input_dim)).astype(np.float32) * 1.5 + 1.0
+        X[defect_idx] += (
+            self.rng.standard_normal((defect_idx.sum(), self.input_dim)).astype(np.float32)
+            * self.DEFECT_NOISE_SCALE
+            + self.DEFECT_SHIFT
+        )
 
         return X, labels
 

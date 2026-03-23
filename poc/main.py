@@ -692,7 +692,7 @@ def main():
     print(f"  Aggregation: {cfg['global']['federated_learning']['aggregation']}")
     print(f"  AL strategy: {cfg['cloud']['active_learning']['uncertainty_strategy']}")
 
-    # Initialise all components
+    # -- Initialise all components
     components = setup_components(cfg)
 
     # ── Round 0: Bootstrap
