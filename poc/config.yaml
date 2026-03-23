@@ -1,0 +1,63 @@
+# POC Configuration – End-to-End Manufacturing AI Architecture
+
+# --------------------------------------------------------------------------
+# Edge Layer
+# --------------------------------------------------------------------------
+edge:
+  num_factories: 3
+  inference_latency_ms: 80          # Target: <100ms
+  confidence_threshold: 0.75        # Below this → upload to cloud
+  sampling_rate_normal: 0.05        # Upload 5% of normal samples
+  input_dim: 64                     # Feature vector dimension
+  local_epochs: 3                   # Local training epochs per FL round
+  local_batch_size: 32
+
+# --------------------------------------------------------------------------
+# Cloud (Regional) Layer
+# --------------------------------------------------------------------------
+cloud:
+  pubsub:
+    max_queue_size: 1000
+  feature_store:
+    num_features: 64
+  active_learning:
+    budget_per_round: 20            # Max samples to label per round
+    uncertainty_strategy: "entropy" # entropy | margin | least_confident
+  drift_detector:
+    ks_significance: 0.05           # p-value threshold for KS test
+    window_size: 200                # Sliding window for reference distribution
+
+# --------------------------------------------------------------------------
+# Global Control Plane
+# --------------------------------------------------------------------------
+global:
+  federated_learning:
+    num_rounds: 3
+    aggregation: "fedavg"           # fedavg | weighted_fedavg
+    min_clients: 2
+  model_registry:
+    max_versions: 10
+  mlops_pipeline:
+    drift_trigger_threshold: 0.05
+    performance_drop_threshold: 0.03  # Trigger retrain if accuracy drops >3%
+
+# --------------------------------------------------------------------------
+# Model
+# --------------------------------------------------------------------------
+model:
+  input_dim: 64
+  hidden_dim: 128
+  num_classes: 2                    # 0=normal, 1=defect
+  learning_rate: 0.001
+
+# --------------------------------------------------------------------------
+# Data Simulation
+# --------------------------------------------------------------------------
+data:
+  samples_per_factory: 500
+  defect_rate_base: 0.15            # ~15% defects (realistic manufacturing)
+  # Each factory has slightly different data distribution (simulating real-world variation)
+  factory_distributions:
+    factory_0: {mean_shift: 0.0, noise_scale: 1.0}
+    factory_1: {mean_shift: 0.3, noise_scale: 1.2}
+    factory_2: {mean_shift: -0.2, noise_scale: 0.9}
