@@ -11,6 +11,7 @@ import os
 import threading
 import time
 
+import pandas as pd
 import streamlit as st
 
 # Ensure poc/ packages are importable
@@ -251,7 +252,6 @@ with tab_detail:
             st.metric("Production Version", snap.get("production_version", "—"))
             versions = snap.get("versions", [])
             if versions:
-                import pandas as pd
                 df = pd.DataFrame([
                     {
                         "Version": v["version_id"],

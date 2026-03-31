@@ -553,7 +553,7 @@ def run_pipeline(state: PipelineState) -> None:
 
         comps = _setup_components(cfg)
         state.emit(-1, "system", "Pipeline", "components_ready",
-                   "All components initialised ✓")
+                   "All components initialized ✓")
 
         # Round 0
         _run_bootstrap(state, comps, cfg)
