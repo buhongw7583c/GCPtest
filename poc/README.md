@@ -47,11 +47,13 @@ Python 3.10+
 pip install -r requirements.txt
 ```
 
-Dependencies: `torch`, `numpy`, `scikit-learn`, `scipy`, `pyyaml`, `pandas`, `matplotlib`
+Dependencies: `torch`, `numpy`, `scikit-learn`, `scipy`, `pyyaml`, `pandas`, `matplotlib`, `streamlit`
 
 ---
 
 ## Run
+
+### CLI mode
 
 ```bash
 cd poc/
@@ -59,6 +61,24 @@ python main.py
 ```
 
 Expected runtime: ~5–15 seconds (CPU only).
+
+### Web UI (Streamlit)
+
+```bash
+cd poc/
+streamlit run app.py
+```
+
+The dashboard opens at `http://localhost:8501` and provides:
+
+- **▶️ Start Pipeline** – run the full 4-round pipeline with live event streaming
+- **📊 Component Detail** – real-time metrics for every layer (Edge, Cloud, Global)
+- **🤖 Agent Query** – ask questions in natural language, e.g.:
+  - *"What is the pipeline status?"*
+  - *"Which model is in production?"*
+  - *"Has drift been detected?"*
+  - *"Show me edge node statistics"*
+  - *"What happened in round 2?"*
 
 ---
 
@@ -80,7 +100,11 @@ Edit `config.yaml` to tune:
 
 ```
 poc/
-├── main.py                        # End-to-end orchestration
+├── main.py                        # End-to-end orchestration (CLI)
+├── app.py                         # Streamlit real-time dashboard + agent chat
+├── pipeline_state.py              # Thread-safe event/state store for the UI
+├── pipeline_runner.py             # Pipeline execution wrapper (emits events)
+├── agent.py                       # Natural-language query agent
 ├── config.yaml                    # All tuneable parameters
 ├── requirements.txt
 ├── models/
