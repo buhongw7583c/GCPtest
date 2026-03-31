@@ -1,4 +1,31 @@
+# Python
 __pycache__/
 *.pyc
 *.pyo
+*.egg-info/
+.eggs/
+*.egg
+
+# Streamlit
 .streamlit/
+
+# Data files (too large for git)
+*.parquet
+*.csv
+*.zip
+poc/nyc-taxi/
+
+# Environment
+.env
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

@@ -8,9 +8,12 @@ edge:
   inference_latency_ms: 80          # Target: <100ms
   confidence_threshold: 0.75        # Below this → upload to cloud
   sampling_rate_normal: 0.05        # Upload 5% of normal samples
-  input_dim: 64                     # Feature vector dimension
+  input_dim: 64                     # Feature vector dimension. The size of the input feature vector for the machine learning model.
+                                    # In this POC, raw sensor data or images are assumed to be pre-processed 
+                                    #into a vector of 64 floating-point numbers.
   local_epochs: 3                   # Local training epochs per FL round
-  local_batch_size: 32
+  local_batch_size: 32              # Batch size for local training on edge devices, 
+                                    # The number of data samples processed in one iteration of gradient descent during local training.  
 
 # --------------------------------------------------------------------------
 # Cloud (Regional) Layer
